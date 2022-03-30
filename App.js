@@ -9,37 +9,51 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import data from "./data.json";
 
 export default function App() {
   console.disableYellowBox = true;
-  //return 구문 밖에서는 슬래시 두개 방식으로 주석
+
+  let tip = data.tip;
+  let todayWeather = 10 + 17;
+  let todayCondition = "흐림";
+
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>조던에 대해 알아보자</Text>
+      <Text style={styles.title}>나만의 꿀팁</Text>
+      <Text style={styles.weather}>오늘의 날씨: {todayWeather + '°C '+ todayCondition}</Text>
       <Image source={main} style={styles.mainImage} />
       <ScrollView style={styles.buttonContainer} horizontal={true}>
         <TouchableOpacity style={styles.button01}>
-          <Text style={styles.buttonText}>개요</Text>
+          <Text style={styles.buttonText}>생활</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button02}>
-          <Text style={styles.buttonText}>특징</Text>
+          <Text style={styles.buttonText}>재태크</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button03}>
-          <Text style={styles.buttonText}>생애</Text>
+          <Text style={styles.buttonText}>반려견</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button04}>
-          <Text style={styles.buttonText}>수상내역</Text>
+          <Text style={styles.buttonText}>기타</Text>
         </TouchableOpacity>
       </ScrollView>
       <View style={styles.cardContainer}>
-        <View style={styles.card}>
-          <Image style={styles.cardImage} source={sub}/>
-          <View style={styles.cardText}>
-            <Text style={styles.cardTitle}>조던 로고</Text>
-            <Text style={styles.cardDesc} numberOfLines={3}>가장 유명한 로고다. 조던이 공중에 뛰어있는 모습을 형상화했다. 정확히 어떤 상황인지는 찾아봐야함...</Text>
-            <Text style={styles.cardDate}>2022.03.30</Text>
-          </View>
-        </View>
+        {tip.map((content, i) => {
+          return (
+            <View style={styles.card} key={i}>
+              <Image style={styles.cardImage} source={{ uri: content.image }} />
+              <View style={styles.cardText}>
+                <Text style={styles.cardTitle} numberOfLines={1}>
+                  {content.title}
+                </Text>
+                <Text style={styles.cardDesc} numberOfLines={3}>
+                  {content.desc}
+                </Text>
+                <Text style={styles.cardDate}>{content.date}</Text>
+              </View>
+            </View>
+          );
+        })}
       </View>
     </ScrollView>
   );
@@ -54,6 +68,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 50,
     marginLeft: 20,
+  },
+  weather: {
+    alignSelf: 'flex-end',
+    paddingRight: 20
   },
   mainImage: {
     width: "90%",
@@ -109,28 +127,28 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   card: {
-    flexDirection: 'row',
-    height: 200,
-    margin: 10
+    flexDirection: "row",
+    height: 100,
+    margin: 10,
   },
   cardImage: {
     flex: 1,
     borderRadius: 10,
     width: "100%",
-    height : 100
+    height: 100,
   },
   cardText: {
     flex: 2,
     marginLeft: 10,
   },
   cardTitle: {
-    fontWeight: 'bold',
-    fontSize: 20
+    fontWeight: "bold",
+    fontSize: 20,
   },
   cardDesc: {
-    fontSize: 15
+    fontSize: 15,
   },
   cardDate: {
-    fontSize: 10
-  }
+    fontSize: 10,
+  },
 });
