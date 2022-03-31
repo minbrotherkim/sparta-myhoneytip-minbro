@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import main from "../assets/jordan.jpg";
 import {
   StyleSheet,
@@ -9,15 +9,27 @@ import {
   ScrollView,
 } from "react-native";
 import data from "../data.json";
+import Card from "../components/Card";
+import Loading from '../components/Loading';
 
 export default function MainPage() {
   console.disableYellowBox = true;
 
-  let tip = data.tip;
+  const[state, setState] = useState([])
+  const[ready, setReady] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setState(data)
+      setReady(false)
+    }, 1000)
+  }, [])
+
+  let tip = state.tip;
   let todayWeather = 10 + 17;
   let todayCondition = "흐림";
 
-  return (
+  return ready ? <Loading/> : (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>나만의 꿀팁</Text>
       <Text style={styles.weather}>
@@ -40,20 +52,7 @@ export default function MainPage() {
       </ScrollView>
       <View style={styles.cardContainer}>
         {tip.map((content, i) => {
-          return (
-            <View style={styles.card} key={i}>
-              <Image style={styles.cardImage} source={{ uri: content.image }} />
-              <View style={styles.cardText}>
-                <Text style={styles.cardTitle} numberOfLines={1}>
-                  {content.title}
-                </Text>
-                <Text style={styles.cardDesc} numberOfLines={3}>
-                  {content.desc}
-                </Text>
-                <Text style={styles.cardDate}>{content.date}</Text>
-              </View>
-            </View>
-          );
+          return <Card content={content} key={i}/>;
         })}
       </View>
     </ScrollView>
