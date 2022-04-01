@@ -13,14 +13,18 @@ import Card from "../components/Card";
 import Loading from "../components/Loading";
 import { StatusBar } from "expo-status-bar";
 
-export default function MainPage() {
+export default function MainPage({navigation, route}) {
   console.disableYellowBox = true;
 
   const [state, setState] = useState([]);
   const [cateState, setCateState] = useState([]);
   const [ready, setReady] = useState(true);
+
   useEffect(() => {
     setTimeout(() => {
+      navigation.setOptions({
+        title: '나만의 꿀팁'
+      })
       let tip = data.tip;
       setState(tip);
       setCateState(tip);
@@ -48,7 +52,6 @@ export default function MainPage() {
   ) : (
     <ScrollView style={styles.container}>
       <StatusBar style="dark" />
-      <Text style={styles.title}>나만의 꿀팁</Text>
       <Text style={styles.weather}>
         오늘의 날씨: {todayWeather + "°C " + todayCondition}
       </Text>
@@ -97,7 +100,7 @@ export default function MainPage() {
       </ScrollView>
       <View style={styles.cardContainer}>
         {cateState.map((content, i) => {
-          return <Card content={content} key={i} />;
+          return <Card content={content} key={i} navigation={navigation}/>;
         })}
       </View>
     </ScrollView>
