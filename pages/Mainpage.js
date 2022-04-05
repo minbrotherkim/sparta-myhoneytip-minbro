@@ -13,7 +13,7 @@ import Card from "../components/Card";
 import Loading from "../components/Loading";
 import { StatusBar } from "expo-status-bar";
 
-export default function MainPage({navigation, route}) {
+export default function MainPage({ navigation, route }) {
   console.disableYellowBox = true;
 
   const [state, setState] = useState([]);
@@ -23,8 +23,8 @@ export default function MainPage({navigation, route}) {
   useEffect(() => {
     setTimeout(() => {
       navigation.setOptions({
-        title: '나만의 꿀팁'
-      })
+        title: "나만의 꿀팁",
+      });
       let tip = data.tip;
       setState(tip);
       setCateState(tip);
@@ -55,6 +55,14 @@ export default function MainPage({navigation, route}) {
       <Text style={styles.weather}>
         오늘의 날씨: {todayWeather + "°C " + todayCondition}
       </Text>
+      <TouchableOpacity
+        style={styles.introduceButton}
+        onPress={() => {
+          navigation.navigate("AboutPage");
+        }}
+      >
+        <Text style={styles.introduceText}>소개 페이지</Text>
+      </TouchableOpacity>
       <Image source={main} style={styles.mainImage} />
       <ScrollView style={styles.buttonContainer} horizontal={true}>
         <TouchableOpacity
@@ -92,7 +100,7 @@ export default function MainPage({navigation, route}) {
         <TouchableOpacity
           style={styles.button05}
           onPress={() => {
-            category("찜하기");
+            navigation.navigate('LikePage')
           }}
         >
           <Text style={styles.buttonText}>찜하기</Text>
@@ -100,7 +108,7 @@ export default function MainPage({navigation, route}) {
       </ScrollView>
       <View style={styles.cardContainer}>
         {cateState.map((content, i) => {
-          return <Card content={content} key={i} navigation={navigation}/>;
+          return <Card content={content} key={i} navigation={navigation} />;
         })}
       </View>
     </ScrollView>
@@ -120,6 +128,20 @@ const styles = StyleSheet.create({
   weather: {
     alignSelf: "flex-end",
     paddingRight: 20,
+  },
+  introduceButton: {
+    alignSelf: "flex-end",
+    borderRadius: 10,
+    backgroundColor: "pink",
+    marginRight: 20,
+    marginTop: 10,
+    padding: 5,
+  },
+  introduceText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
   },
   mainImage: {
     width: "90%",
