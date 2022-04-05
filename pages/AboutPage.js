@@ -1,8 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import * as Linking from "expo-linking";
 
-export default function AboutPage() {
+export default function AboutPage({navigation, route}) {
   console.disableYellowBox = true;
+
+  useEffect(() => {
+    
+    navigation.setOptions({
+      title: '소개 페이지',
+      headerStyle: {
+        backgroundColor: "#1F266A",
+        shadowColor: "#1F266A",
+      },
+      headerTintColor: "#fff",
+    });
+  })
 
   return (
     <View style={styles.container}>
@@ -22,7 +35,12 @@ export default function AboutPage() {
         <Text style={styles.introdescText}>
           꼭 완주하셔서 꼭 여러분의 것으로 만들어가시길 바랍니다!
         </Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            Linking.openURL("https://www.instagram.com/minbrotherkim/");
+          }}
+        >
           <Text style={styles.buttonText}>Instagram</Text>
         </TouchableOpacity>
       </View>
