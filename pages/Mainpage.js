@@ -128,11 +128,7 @@ export default function MainPage({ navigation, route }) {
         <TouchableOpacity
           style={styles.button05}
           onPress={() => {
-<<<<<<< HEAD
-            navigation.navigate('LikePage')
-=======
             navigation.navigate("LikePage");
->>>>>>> 60b99fb07ed38d2a147c34cdaedb0fc5ba2a8eaf
           }}
         >
           <Text style={styles.buttonText}>찜하기</Text>
