@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, ScrollView } from "react-native";
+import { ScrollView, Text, StyleSheet } from "react-native";
 import LikeCard from "../components/LikeCard";
-import { firebase_db } from "../firebaseConfig";
-import Constants, { UserInterfaceIdiom } from "expo-constants";
 import Loading from "../components/Loading";
+import Constants from "expo-constants";
+import { firebase_db } from "../firebaseConfig";
 
 export default function LikePage({ navigation, route }) {
-  let user_id = Constants.installationId;
-
   const [tip, setTip] = useState([]);
   const [ready, setReady] = useState(true);
 
@@ -15,26 +13,46 @@ export default function LikePage({ navigation, route }) {
     navigation.setOptions({
       title: "꿀팁 찜",
     });
+    const user_id = Constants.installationId;
     firebase_db
-      .ref(`/like/${user_id}`)
+      .ref("/like/" + user_id)
       .once("value")
       .then((snapshot) => {
-        console.log("파이어베이스에서 찜하기 데이터 가져왔습니다!!");
+        console.log("파이어베이스에서 데이터 가져왔습니다!!");
         let tip = snapshot.val();
         console.log(tip);
-        if (tip.length) {
-          setTip(tip);
+        let tip_list = Object.values(tip);
+        if (tip_list.length > 0) {
+          setTip(tip_list);
           setReady(false);
         }
       });
   }, []);
+
+  const reload = () => {
+    const user_id = Constants.installationId;
+    firebase_db
+      .ref(`/like/${user_id}`)
+      .once("value")
+      .then((snapshot) => {
+        //snapshot에 값이 있는지 없는지 체크하는 exists 함수 사용
+        if (snapshot.exists()) {
+          let tip = snapshot.val();
+          let tip_list = Object.values(tip);
+          setTip(tip_list);
+        } else {
+          setReady(true);
+          setTip([]);
+        }
+      });
+  };
 
   return ready ? (
     <Loading />
   ) : (
     <ScrollView style={styles.container}>
       {tip.map((content, i) => {
-        return <LikeCard content={content} key={i} navigation={navigation} />;
+        return <LikeCard key={i} content={content} navigation={navigation} reload={reload}/>;
       })}
     </ScrollView>
   );
