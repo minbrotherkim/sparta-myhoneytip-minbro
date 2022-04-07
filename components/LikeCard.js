@@ -1,16 +1,17 @@
 import React from "react";
 import { View, Image, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { firebase_db } from "../firebaseConfig";
-import Constants, { UserInterfaceIdiom } from "expo-constants";
+import Constants  from "expo-constants";
 
-//MainPage로 부터 navigation 속성을 전달받아 Card 컴포넌트 안에서 사용
+//LikePage로 부터 navigation 속성을 전달받아 Card 컴포넌트 안에서 사용
 export default function LikeCard({ content, navigation, reload }) {
+  const user_id = Constants.installationId;
+  
   const detail = () => {
     navigation.navigate("DetailPage", { idx: content.idx });
   };
 
   const remove = () => {
-    const user_id = Constants.installationId;
     firebase_db
       .ref(`/like/${user_id}/${content.idx}`)
       .remove()

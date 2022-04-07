@@ -9,11 +9,12 @@ export default function LikePage({ navigation, route }) {
   const [tip, setTip] = useState([]);
   const [ready, setReady] = useState(true);
 
+  const user_id = Constants.installationId;
+
   useEffect(() => {
     navigation.setOptions({
       title: "꿀팁 찜",
     });
-    const user_id = Constants.installationId;
     firebase_db
       .ref("/like/" + user_id)
       .once("value")
@@ -30,7 +31,6 @@ export default function LikePage({ navigation, route }) {
   }, []);
 
   const reload = () => {
-    const user_id = Constants.installationId;
     firebase_db
       .ref(`/like/${user_id}`)
       .once("value")
@@ -52,7 +52,14 @@ export default function LikePage({ navigation, route }) {
   ) : (
     <ScrollView style={styles.container}>
       {tip.map((content, i) => {
-        return <LikeCard key={i} content={content} navigation={navigation} reload={reload}/>;
+        return (
+          <LikeCard
+            key={i}
+            content={content}
+            navigation={navigation}
+            reload={reload}
+          />
+        );
       })}
     </ScrollView>
   );

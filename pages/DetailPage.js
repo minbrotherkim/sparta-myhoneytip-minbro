@@ -14,7 +14,6 @@ import { firebase_db } from "../firebaseConfig";
 import Constants from "expo-constants";
 
 export default function DetailPage({ navigation, route }) {
-  let user_idx = Constants.installationId;
   const [tip, setTip] = useState({
     idx: 9,
     category: "재테크",
